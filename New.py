@@ -22,6 +22,8 @@ def add_student():
 
     return jsonify({'message': 'Student Added Successfully'}), 201
 
+
+
 #get method
 @app.route('/fetchall',methods=['GET'])
 def Fetch_all():
@@ -31,6 +33,13 @@ def Fetch_all():
     cursor.close()
     return jsonify(rows)
 
+@app.route('/fecthbyID/<int:id>',methods=['GET'])
+def FetchById(id):
+    cursor=db.cursor(dictionary=True  )
+    cursor.execute('select * from students where id=%s',(id,))
+    data=cursor.fetchall()
+    cursor.close()
+    return jsonify(data)
 
 if __name__=='__main__':
     print("connecting")
