@@ -9,20 +9,17 @@ db=mysql.connector.connect(
     password="Sujendra@27",  
     database="mydatabase"
 )
+
 @app.route('/addStudent', methods=['POST'])
 def add_student():
     data = request.get_json()
     name = data.get('name')
     mark = data.get('mark')  
-
     cursor = db.cursor()
     query = "INSERT INTO students(name, mark) VALUES (%s, %s)"
     cursor.execute(query, (name, mark))
     db.commit()
-
     return jsonify({'message': 'Student Added Successfully'}), 201
-
-
 
 #get method
 @app.route('/fetchall',methods=['GET'])
@@ -40,6 +37,28 @@ def FetchById(id):
     data=cursor.fetchall()
     cursor.close()
     return jsonify(data)
+
+@app.route('/upadte',methods=['PUT'])
+def upadte_data():
+    id=request.json.get('id')
+    name=request.json.get('name')
+    mark=request.json.get('mark')
+    cursor=db.cursor()
+    query="UPDATE students SET name=%s,mark=%s WHERE id=%s"
+    cursor.execute(query,(name,mark,id))
+    db.commit()
+    cursor.close()
+    return jsonify({'message':'Data Updated Successfully'}),200
+
+@app.route('/delete/<int:id>',methods=["DELETE"])
+def delete_data(id):
+    cursor = db.cursor()
+    query = "DELETE FROM students WHERE id = %s"
+    cursor.execute(query, (id,))
+    db.commit()
+    cursor.close()
+    return jsonify({'message':'Data Deleted Successfully'}),200
+
 
 if __name__=='__main__':
     print("connecting")
