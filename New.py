@@ -9,6 +9,7 @@ db=mysql.connector.connect(
     password="Sujendra@27",  
     database="mydatabase"
 )
+#CURD operations GET,PUT,POST,DELETE
 
 @app.route('/addStudent', methods=['POST'])
 def add_student():
@@ -58,7 +59,7 @@ def delete_data(id):
     db.commit()
     cursor.close()
     return jsonify({'message':'Data Deleted Successfully'}),200
-
+    
 
 if __name__=='__main__':
     print("connecting")
